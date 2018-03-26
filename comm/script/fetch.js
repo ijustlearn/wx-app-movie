@@ -8,6 +8,12 @@ function fetchFilms(url, start, count, cb, fail_cb) {
   var that = this
   console.log(that)
   message.hide.call(that)
+  let sessionId = wx.getStorageSync('sessionId')
+  if (sessionId != "" && sessionId != null) {
+    var header = { 'content-type': 'application/json', 'sessionId': sessionId };
+  } else {
+    var header = { 'content-type': 'application/json' };
+  }
   if (that.data.hasMore) {
     wx.request({
       url: url,
@@ -17,9 +23,7 @@ function fetchFilms(url, start, count, cb, fail_cb) {
         count: config.count
       },
       method: 'GET', 
-      header: {
-        "Content-Type": "application/json,application/json"
-      },
+      header: header,
       success: function(res){
         console.log(res.data)
         if (res.data.obj.list.length === 0){
@@ -61,7 +65,7 @@ function fetchFilmDetail(url, id, cb) {
     url: url + id,
     method: 'GET',
     header: {
-      "Content-Type": "application/json,application/json"
+      "Content-Type": "application/json"
     },
     success: function(res){
       that.setData({
@@ -96,7 +100,7 @@ function fetchPersonDetail(url, id, cb) {
     url: url + id,
     method: 'GET', 
     header: {
-      "Content-Type": "application/json,application/json"
+      "Content-Type": "application/json"
     },
     success: function(res){
       that.setData({
@@ -137,7 +141,7 @@ function search(url, keyword, start, count, cb){
       },
       method: 'GET',
       header: {
-        "Content-Type": "application/json,application/json"
+        "Content-Type": "application/json"
       },
       success: function(res){
         if(res.data.subjects.length === 0){
@@ -171,9 +175,46 @@ function search(url, keyword, start, count, cb){
     })
   }
 }
+
+//  公用请求方法
+function selfRequest({ url, data, success, method = "GET" ,fail}) {
+  console.log("自定义的请求方法")
+  //let server = 'https://xxx.xxxxxxxx.cn';//正式域名
+  // let server = 'http://dxxx.xxxxxxxxxx.cn';//测试域名
+  // 本地取存储的 sessionID
+  let sessionId = wx.getStorageSync('sessionId'),
+    that = this;
+
+  if (sessionId != "" && sessionId != null) {
+    var header = { 'content-type': 'application/json', 'sessionId':  sessionId };
+  } else {
+    var header = { 'content-type': 'application/json' };
+  }
+  wx.request({
+    url: url,
+    method: method,
+    data: data,
+    header: header,
+    success: (res) => {
+      success(res);
+    },
+    fail: function (res) {
+      wx.hideLoading();
+      wx.showToast({
+        title: '请求超时',
+        icon: 'loading',
+        duration: 2000
+      })
+    },
+    complete: function () {
+      wx.hideLoading();
+    }
+  });
+}
 module.exports = {
   fetchFilms: fetchFilms,
   fetchFilmDetail: fetchFilmDetail,
   fetchPersonDetail: fetchPersonDetail,
-  search: search
+  search: search,
+  selfRequest:selfRequest
 }

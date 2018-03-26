@@ -1,35 +1,36 @@
 <import src="../../component/nullTip/nullTip.wxml"/>
 <view class="tab-header">
-    <view class="tab-header-item {{show == 'film_favorite' ? 'tab-header-active' : ''}}" data-type="film_favorite" bindtap="changeViewType">电影</view>
+    <view class="tab-header-item {{show == 'films' ? 'tab-header-active' : ''}}" data-type="films" bindtap="changeViewType">电影</view>
     <view class="tab-header-item {{show == 'person_favorite' ? 'tab-header-active' : ''}}" data-type="person_favorite" bindtap="changeViewType">人物</view>
 </view>
 <view class="tab-content">
-    <view class="tab-content-item" hidden="{{show == 'film_favorite' ? false : true}}">
-        <block wx:if="{{film_favorite.length == 0}}">
+    <view class="tab-content-item" hidden="{{show == 'films' ? false : true}}">
+        <block wx:if="{{films.length == 0}}">
             <template is="nullTip" data="{{nullTip: nullTip}}"/>
         </block>
         <block wx:else>
-            <block wx:for="{{film_favorite}}" wx:for-item="filmFavoriteItem" wx:for-index="filmFavoriteIndex" wx:key="filmFavorite">
+            <block wx:for="{{films}}" wx:for-item="filmFavoriteItem" wx:for-index="filmFavoriteIndex" wx:key="id">
                 <view class="favorite-film-item" data-id="{{filmFavoriteItem.id}}" bindtap="viewFilmDetail">
-                    <image class="favorite-film-cover" src="{{filmFavoriteItem.images.large}}"></image>
+                    <image class="favorite-film-cover" src="{{filmFavoriteItem.movieImgUrl}}"></image>
                     <view class="favorite-film-info">
-                        <view class="favorite-film-txt favorite-film-title">{{filmFavoriteItem.title}}</view>
-                        <view class="favorite-film-txt">导演：{{filmFavoriteItem.directors[0].name}}</view>
+                        <view class="favorite-film-txt favorite-film-title">{{filmFavoriteItem.movieName}}</view>
+                        <!-- <view class="favorite-film-txt">导演：{{filmFavoriteItem.directors[0].name}}</view>
                         <view class="favorite-film-txt">演员：
                             <block wx:for="{{filmFavoriteItem.casts}}" wx:for-item="filmDetailCastItem" wx:for-index="filmDetailCastIndex" wx:key="filmDetailCastItem">
                                 {{filmDetailCastItem.name}}
                                 <block wx:if="{{filmDetailCastIndex !== filmFavoriteItem.casts.length - 1}}">/</block>
                             </block>
-                        </view>
-                        <view class="favorite-film-txt">豆瓣评分：
+                        </view> -->
+                        <!-- <view class="favorite-film-txt">豆瓣评分：
                             <block wx:if="{{filmFavoriteItem.rating.average == 0}}">
                                 暂无评分
                             </block>
                             <block wx:else>
                                 {{filmFavoriteItem.rating.average}}分
                             </block>
-                        </view>
-                        <view class="favorite-film-txt">上映年份：{{filmFavoriteItem.year}}年</view>
+                        </view> -->
+                        <view class="favorite-film-txt">上映年份：{{filmFavoriteItem.movieYear}}年</view>
+                        <view class="favorite-film-txt">来源：{{filmFavoriteItem.source}}</view>
                     </view>
                 </view>
             </block>
@@ -62,4 +63,10 @@
             </block>
         </block>
     </view>
+    <block wx:if="{{hasMore}}">
+        <view class="loading-tip">拼命加载中…</view>
+    </block>
+    <block wx:else>
+        <view class="loading-tip">没有更多内容了</view>
+    </block>
 </view>

@@ -37,12 +37,12 @@
       "pagePath": "pages/popular/popular",
       "iconPath": "dist/images/popular_icon.png",
       "selectedIconPath": "dist/images/popular_active_icon.png",
-      "text": "热映"
+      "text": "大全"
     }, {
       "pagePath": "pages/coming/coming",
       "iconPath": "dist/images/coming_icon.png",
       "selectedIconPath": "dist/images/coming_active_icon.png",
-      "text": "待映"
+      "text": "最新"
     },
     {
       "pagePath": "pages/top/top",
