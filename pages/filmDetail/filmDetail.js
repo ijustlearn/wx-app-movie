@@ -5,26 +5,26 @@ Page({
     data: {
         filmDetail: {},
         showLoading: true,
-		    showContent: false
+		    showContent: false,
+        dialogShow: false
     },
     onLoad: function(options) {
         var that = this
         var id = options.id
 		douban.fetchFilmDetail.call(that, config.apiList.filmDetail, id, function(data){
 			/// 判断是否收藏
-      that.hasFilmFavorite()
-			// wx.getStorage({
-			// key: 'film_favorite',
-			// 	success: function(res){
-			// 		for (var i = 0; i < res.data.length; i++) {
-			// 			if (res.data[i].id == data.id) {
-			// 				that.setData({
-			// 					isFilmFavorite: true
-			// 				})
-			// 			}
-			// 		}
-			// 	}
-			// })
+			wx.getStorage({
+			key: 'film_favorite',
+				success: function(res){
+					for (var i = 0; i < res.data.length; i++) {
+						if (res.data[i].id == data.id) {
+							that.setData({
+								isFilmFavorite: true
+							})
+						}
+					}
+				}
+			})
 			// 存储浏览历史
 			var date = util.getDate()
 			var time = util.getTime()
@@ -103,87 +103,76 @@ Page({
 	favoriteFilm: function() {
 		var that = this
 		// 判断原来是否收藏，是则删除，否则添加
-    if (that.data.isFilmFavorite){
-      //收藏的需要删除
-
-    }else{
-      //没有收藏需要添加收藏
-    }
-		// wx.getStorage({
-		// 	key: 'film_favorite',
-		// 	success: function(res){
-		// 		var film_favorite = res.data
-		// 		if (that.data.isFilmFavorite) {
-		// 			// 删除
-		// 			for (var i = 0; i < film_favorite.length; i++) {
-		// 				if (film_favorite[i].id == that.data.filmDetail.id) {
-		// 					film_favorite.splice(i,1)
-		// 					that.setData({
-		// 						isFilmFavorite: false
-		// 					})
-		// 				}
-		// 			}
-		// 			wx.setStorage({
-		// 				key: 'film_favorite',
-		// 				data: film_favorite,
-		// 				success: function(res){
-		// 					console.log(res)
-		// 					console.log('----设置成功----')
-		// 				}
-		// 			})
-		// 		} else {
-		// 			// 添加
-		// 			film_favorite.push(that.data.filmDetail)
-		// 			wx.setStorage({
-		// 				key: 'film_favorite',
-		// 				data: film_favorite,
-		// 				success: function(res){
-		// 					that.setData({
-		// 						isFilmFavorite: true
-		// 					})
-		// 				}
-		// 			})
-		// 		}
-		// 	}
-		// })
+		wx.getStorage({
+			key: 'film_favorite',
+			success: function(res){
+        console.log(res)
+				var film_favorite = res.data
+				if (that.data.isFilmFavorite) {
+					// 删除
+					for (var i = 0; i < film_favorite.length; i++) {
+						if (film_favorite[i].id == that.data.filmDetail.id) {
+							// film_favorite.splice(i,1)
+							that.setData({
+								isFilmFavorite: false
+							})
+						}
+					}
+					wx.setStorage({
+						key: 'film_favorite',
+						data: film_favorite,
+						success: function(res){
+							console.log(res)
+							console.log('----设置成功----')
+						}
+					})
+				} else {
+					// 添加
+					film_favorite.push(that.data.filmDetail)
+					wx.setStorage({
+						key: 'film_favorite',
+						data: film_favorite,
+						success: function(res){
+							that.setData({
+								isFilmFavorite: true
+							})
+						}
+					})
+				}
+			}
+		})
 	},
-  showDownItem:function(e){
-    var data = e.currentTarget.dataset
-    var keyword = data.tag
+  // 弹窗
+  showDownItem(e){
+    let data = e.currentTarget.dataset
+    let keyword = data.tag
+    this.setData({
+      dialogShow: true,
+      downUrl: keyword
+    })
     // wx.redirectTo({
     //   url: '../searchResult/searchResult?url=' + encodeURIComponent(config.apiList.search.byTag) + '&keyword=' + keyword
     // })
   },
-  /**
-   * 远程查看是否已经收藏
-   */
-  hasFilmFavorite:function(){
-    var that = this
-    douban.selfRequest({
-      url: config.apiList.user.checkFilmUrl,
-      data:{
-        movieId: that.data.filmDetail.id
-      },
-      success:function(res){
-        //设置是否收藏
-        that.setData({
-          isFilmFavorite: res.data.obj
-        })
-      }
+  concealDownItem() {
+    this.setData({
+      dialogShow: false
     })
   },
-  //更改收藏状态
-  changeFilmStatus:function(){
-    var that = this
-    douban.selfRequest({
-      url: config.apiList.user.changeFilmStatusUrl,
-      data: {
-        movieId: that.data.filmDetail.id
-      },
+  downloadFn() {
+    let _downUrl = this.data.downUrl
+    console.log(_downUrl)
+  },
+  copyFn() {
+    let _downUrl = this.data.downUrl
+    wx.setClipboardData({
+      data: _downUrl,
       success: function (res) {
-        var currentStatus = that.data.isFilmFavorite == true ? false : true
-        that.setData({
-          isFilmFavorite: currentStatus
+        console.log(res)
+        wx.getClipboardData({
+          success: function (res) {
+            console.log(res.data) // data
+          }
         })
       }
     })

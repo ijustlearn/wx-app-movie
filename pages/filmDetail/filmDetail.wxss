@@ -189,3 +189,44 @@
 .fd-bd-person-role {
     color: #999
 }
+
+.fd-bd-dialog{
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999999999;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.fd-bd-dialog-cont{
+  flex-direction: column;
+  width: 550rpx;
+  border-radius: 8rpx;
+  background: #fff;
+  color: #000;
+}
+.fd-bd-dialog-cont-item{
+  height: 120rpx;
+}
+.download-btn{
+  width: 350rpx;
+  height: 60rpx;
+  padding: 10rpx 20rpx;
+  text-align: center;
+  line-height: 40rpx;
+  background: #47a86c;
+  border-radius: 4px;
+}
+.dn{
+  display: none;
+}
+.df{
+  display: flex;
+}
+.center{
+  flex-direction:column;
+  align-items:center;
+  justify-content: center;
+}
