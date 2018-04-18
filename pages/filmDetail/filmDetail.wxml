@@ -83,13 +83,34 @@
         </block>
       </view>
     </view>
-    <view class="fd-bd-dialog dn center {{dialogShow ? 'df' : ''}}" catchtap="concealDownItem">
+    <view class="fd-bd-dialog dn center {{dialogShow ? 'df' : ''}}" catchtap="cancelDownItem">
       <view class="fd-bd-dialog-cont">
         <view class="fd-bd-dialog-cont-item df center">
           <button class="download-btn" catchtap="downloadFn">点击下载</button>
         </view>
         <view class="fd-bd-dialog-cont-item df center">
           <button class="download-btn" catchtap="copyFn">复制磁力链接</button>
+        </view>
+      </view>
+    </view>
+
+    <view class="fd-bd-login dn center {{loginShow ? 'df' : ''}}">
+      <view class="fd-bd-login-cont">
+        <view class="int-item">
+          <label>
+            <input type="text" placeholder='输入迅雷账号' bindinput="ThunkerAccount" value="{{ThunkerAccount}}" />
+            <icon type="clear" catchtap="clearThunkerAccount"></icon>
+          </label>
+        </view>
+        <view class="int-item">
+          <label>
+            <input type="text" password placeholder='输入密码' bindinput='ThunkerPW' value='{{ThunkerPassword}}' />
+            <!-- <icon type="clear"></icon> -->
+          </label>
+        </view>
+        <view class="int-btn">
+          <button type="primary" loading="{{loginLoad}}" disabled="{{allowChange}}" catchtap='loginThunker'>绑定</button>
+          <button catchtap="cancelLogin">取消</button>
         </view>
       </view>
     </view>
