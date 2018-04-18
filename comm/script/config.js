@@ -12,7 +12,8 @@ shakeSound: 摇一摇音效地址（带url表示远程地址）
 shakeWelcomeImg: 摇一摇欢迎图片
 */
 var url = 'https://static.sesine.com/wechat-weapp-movie'
-var springUrl =  "https://wx.liuchangyang.com:8443"
+var springUrl =  "https://wx.liuchangyang.cn:8443"
+// var springUrl = "https://127.0.0.1:8443"
 module.exports = {
     city: '',
     count: 20,
@@ -34,7 +35,8 @@ module.exports = {
         user:{
           movies: springUrl+'/user/movies',
           checkFilmUrl: springUrl+'/user/hasFilm',
-          changeFilmStatusUrl: springUrl +'/user/changeFilmStatus'
+          changeFilmStatusUrl: springUrl +'/user/changeFilmStatus',
+          checkHasBindXunlei: springUrl + '/user/xunlei/hasBind'
         }
     },
     hotKeyword: ['功夫熊猫', '烈日灼心', '摆渡人', '长城', '我不是潘金莲', '这个杀手不太冷', '驴得水', '海贼王之黄金城', '西游伏妖片', '我在故宫修文物', '你的名字'],
