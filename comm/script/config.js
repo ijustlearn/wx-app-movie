@@ -28,7 +28,7 @@ module.exports = {
       byKeyword: 'https://api.douban.com/v2/movie/search?q=',
       byTag: 'https://api.douban.com/v2/movie/search?tag='
     },
-    filmDetail: 'https://wx.liuchangyang.com:8443/movies/',
+    filmDetail: springUrl + '/movies/',
     personDetail: 'https://api.douban.com/v2/movie/celebrity/',
     baiduMap: 'https://api.map.baidu.com/geocoder/v2/',
     loginUrl: springUrl + '/auth/wxLogin',
